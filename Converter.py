@@ -38,7 +38,7 @@ for r in ws.rows:
         continue
     else:
         Previous_position = [r[0].value, r[1].value, r[2].value]
-        errors.append(sum([abs(Predict_position[i]-Previous_position[i]) for i in range(3)])/3)
+        errors.append(sum([(Predict_position[i]-Previous_position[i])**2 for i in range(3)])/3)
         for ci, value in enumerate(Previous_position+Predict_position) :
             wrs.cell(row=ri, column=ci+1).value = value
         ri+=1
@@ -47,4 +47,4 @@ for r in ws.rows:
     Predict_position = [Predict_position[0] + r[12].value*t + r[6].value*0.5*t**2, Predict_position[1] + r[13].value*t + r[7].value*0.5*t**2, Predict_position[2] + r[14].value*t + (r[8].value-gravity)*0.5*t**2]
 
 wr.save('pred.xlsx')
-print("Mean absolute error:",sum(errors)/len(errors))
+print("RMSD :",(sum(errors)/len(errors))**0.5)
