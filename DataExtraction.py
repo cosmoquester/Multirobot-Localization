@@ -1,3 +1,9 @@
+'''
+This file is for data extraction.
+It receive sensor data from vrep and write in excel.
+Save file 'data.xlsx'
+'''
+
 import vrep
 import sys
 import xlsxwriter
