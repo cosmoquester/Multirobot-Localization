@@ -1,15 +1,23 @@
+'''
+This file is for predict.
+Load excel data and Predict using dead reckoning.
+Output file is 'pred.xlsx'. 
+'''
+
+
 import openpyxl
 
 gravity = -9.79641227572363
 
-# 엑셀파일 열기
+# Excel file open
 wb = openpyxl.load_workbook('data.xlsx')
 wr = openpyxl.Workbook()
  
-# 현재 Active Sheet 얻기
+# Get Sheet of Excel
 ws = wb.active
 wrs = wr.active
 # ws = wb.get_sheet_by_name("Sheet1")
+
 
 wrs.cell(row=1, column=1).value = 'Real-X'
 wrs.cell(row=1, column=2).value = 'Real-Y'
