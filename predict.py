@@ -27,7 +27,8 @@ wrs.cell(row=1, column=5).value = 'Estimate-Y'
 wrs.cell(row=1, column=6).value = 'Estimate-Z'
 
 
-t = 0.01
+time = 0
+t=0
 ok=False
 Predict_position=[]
 Previous_position=[]
@@ -43,13 +44,17 @@ for r in ws.rows:
         ok=True
         Previous_position=[r[0].value, r[1].value, r[2].value]
         Predict_position=Previous_position[:]
+        time = r[18].value
         continue
     else:
         Previous_position = [r[0].value, r[1].value, r[2].value]
+        t = (r[18].value - time)/1000
+        time = r[18].value
         errors.append(sum([(Predict_position[i]-Previous_position[i])**2 for i in range(3)])/3)
         for ci, value in enumerate(Previous_position+Predict_position) :
             wrs.cell(row=ri, column=ci+1).value = value
         ri+=1
+
 
     # Using "position = previous_position + velocity*time + 0.5*acceleration*time^2"
     Predict_position = [Predict_position[0] + r[12].value*t + r[6].value*0.5*t**2, Predict_position[1] + r[13].value*t + r[7].value*0.5*t**2, Predict_position[2] + r[14].value*t + (r[8].value-gravity)*0.5*t**2]
