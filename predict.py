@@ -10,7 +10,7 @@ import openpyxl
 gravity = -9.79641227572363
 
 # Excel file open
-wb = openpyxl.load_workbook('data.xlsx')
+wb = openpyxl.load_workbook('data_noised.xlsx')
 wr = openpyxl.Workbook()
  
 # Get Sheet of Excel
