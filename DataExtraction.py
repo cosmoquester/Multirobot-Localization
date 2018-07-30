@@ -21,7 +21,7 @@ if clientID == -1:
 print ("Connected to remote API server")
 
 # Car Control
-errorCode, left_motor_handle = vrep.simxGetObjectHandle(clientID, "Pioneer_p3dx_leftMotor", vrep.simx_opmode_blocking)
+errorCode, car_handle = vrep.simxGetObjectHandle(clientID, "Pioneer_p3dx", vrep.simx_opmode_blocking)
 #errorCode, right_motor_handle = vrep.simxGetObjectHandle(clientID, "Pioneer_p3dx_rightMotor", vrep.simx_opmode_blocking)
 #vrep.simxSetJointTargetVelocity(clientID, left_motor_handle, 0.2, vrep.simx_opmode_streaming)
 #vrep.simxSetJointTargetVelocity(clientID, right_motor_handle, 0.2, vrep.simx_opmode_streaming)
@@ -45,7 +45,7 @@ workbook = xlsxwriter.Workbook('data.xlsx')
 worksheet = workbook.add_worksheet()
 
 # Some data we want to write to the worksheet.
-defaults = ['X-posi', 'Y-posi', 'Z-posi', 'gyroX', 'gyroY', 'gyroZ', 'accelX', 'accelY', 'accelZ', 'alpha', 'beta', 'gamma', 'vx', 'vy', 'vz', 'dAlpha', 'dBeta', 'dGamma', 'Time']
+defaults = ['X-posi', 'Y-posi', 'Z-posi', 'gyroX', 'gyroY', 'gyroZ', 'accelX', 'accelY', 'accelZ', 'alpha', 'beta', 'gamma', 'vx', 'vy', 'vz', 'Time']
 t = 0
 
 # Iterate over the data and write it out row by row.
@@ -78,20 +78,20 @@ try:
         #print("GPS : {:.5f} {:.5f} {:.5f}".format(gpsX, gpsY, gpsZ))
         
         # Absolute Position Get
-        errorCode, pos = vrep.simxGetObjectPosition(clientID, left_motor_handle, -1, vrep.simx_opmode_streaming)
+        errorCode, pos = vrep.simxGetObjectPosition(clientID, car_handle, -1, vrep.simx_opmode_streaming)
         #print("Position : {:.5f} {:.5f} {:.5f}\n".format(pos[0], pos[1], pos[2]))
         
         # Orientation Get
-        errorCode, ori = vrep.simxGetObjectOrientation(clientID, left_motor_handle, -1, vrep.simx_opmode_streaming)
+        errorCode, ori = vrep.simxGetObjectOrientation(clientID, car_handle, -1, vrep.simx_opmode_streaming)
         
         # Velocity
-        errorCode, LinearV, AngularV = vrep.simxGetObjectVelocity(clientID, left_motor_handle, vrep.simx_opmode_streaming if i is 1 else vrep.simx_opmode_buffer)
+        errorCode, LinearV, AngularV = vrep.simxGetObjectVelocity(clientID, car_handle, vrep.simx_opmode_streaming if i is 1 else vrep.simx_opmode_buffer)
         
         # Simulation Time
         if t != vrep.simxGetLastCmdTime(clientID):
             t = vrep.simxGetLastCmdTime(clientID)
 
-            for col, data in enumerate([pos[0], pos[1], pos[2], gyroX, gyroY, gyroZ, accelX, accelY, accelZ, ori[0], ori[1], ori[2], LinearV[0], LinearV[1], LinearV[2], AngularV[0], AngularV[1], AngularV[2], t]):
+            for col, data in enumerate([pos[0], pos[1], pos[2], gyroX, gyroY, gyroZ, accelX, accelY, accelZ, ori[0], ori[1], ori[2], LinearV[0], LinearV[1], LinearV[2], t]):
                 worksheet.write(i, col, data)
         else:
             i -= 1

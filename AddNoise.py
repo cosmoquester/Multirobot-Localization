@@ -26,9 +26,9 @@ for i, c in enumerate(next(rows)):
 
 # Read Excel Data
 for i, r in enumerate(rows):
-    for c in range(18):    
+    for c in range(15):    
         wrs.cell(row=i+2, column = c+1).value = r[c].value + rand(-NoiseLevel, NoiseLevel)
-    wrs.cell(row = i+2, column = 19).value = r[18].value
+    wrs.cell(row = i+2, column = 16).value = r[15].value
 
 
 wr.save('data_noised.xlsx')

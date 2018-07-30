@@ -44,12 +44,12 @@ for r in ws.rows:
         ok=True
         Previous_position=[r[0].value, r[1].value, r[2].value]
         Predict_position=Previous_position[:]
-        time = r[18].value
+        time = r[15].value
         continue
     else:
         Previous_position = [r[0].value, r[1].value, r[2].value]
-        t = (r[18].value - time)/1000
-        time = r[18].value
+        t = (r[15].value - time)/1000
+        time = r[15].value
         errors.append(sum([(Predict_position[i]-Previous_position[i])**2 for i in range(3)])/3)
         for ci, value in enumerate(Previous_position+Predict_position) :
             wrs.cell(row=ri, column=ci+1).value = value
