@@ -74,8 +74,8 @@ for r in ws.rows:
 
 wr.save('pred.xlsx')
 print("RMSD :",(sum(errors)/len(errors))**0.5)
-plt.plot(real_poss[0], real_poss[1], color='blue', label = 'Real')
-plt.plot(pred_poss[0], pred_poss[1], color='red', label = 'Predict')
+plt.plot(real_poss[0], real_poss[1], color='yellow', label = 'Real')
+plt.plot(pred_poss[0], pred_poss[1], color='violet', label = 'Predict')
 plt.xlabel('x - velocity')
 plt.ylabel('y - velcoity')
 plt.legend(loc = 'upper right')
