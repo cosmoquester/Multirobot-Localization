@@ -11,7 +11,12 @@ import matplotlib.pyplot as plt
 gravity = -9.79641227572363
 
 # Excel file open
-wb = openpyxl.load_workbook('data_noised.xlsx')
+try:
+    wb = openpyxl.load_workbook('data_noised.xlsx')
+except:
+    wb = openpyxl.load_workbook('data.xlsx')
+    print("Predict with non-noised File")
+
 wr = openpyxl.Workbook()
  
 # Get Sheet of Excel
