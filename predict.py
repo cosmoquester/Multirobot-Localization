@@ -6,6 +6,7 @@ Output file is 'pred.xlsx'.
 
 
 import openpyxl
+import matplotlib.pyplot as plt
 
 gravity = -9.79641227572363
 
@@ -19,21 +20,20 @@ wrs = wr.active
 # ws = wb.get_sheet_by_name("Sheet1")
 
 
-wrs.cell(row=1, column=1).value = 'Real-X'
-wrs.cell(row=1, column=2).value = 'Real-Y'
-wrs.cell(row=1, column=3).value = 'Real-Z'
-wrs.cell(row=1, column=4).value = 'Estimate-X'
-wrs.cell(row=1, column=5).value = 'Estimate-Y'
-wrs.cell(row=1, column=6).value = 'Estimate-Z'
-
+for i, val in enumerate(['Real-X', 'Real-Y', 'Real-Z', 'Estimate-X', 'Estimate-Y', 'Estimate-Z', 'Ori-alpha', 'Ori-beta', 'Ori-gamma']):
+    wrs.cell(row=1, column=i+1).value = val
 
 time = 0
 t=0
 ok=False
 Predict_position=[]
 Previous_position=[]
+orientation = [0,0,0]
 errors=[]
 ri=2
+
+real_poss = [[],[],[]]
+pred_poss = [[],[],[]]
 
 # Read Excel Data
 for r in ws.rows:
@@ -47,17 +47,28 @@ for r in ws.rows:
         time = r[15].value
         continue
     else:
-        Previous_position = [r[0].value, r[1].value, r[2].value]
         t = (r[15].value - time)/1000
         time = r[15].value
+        Previous_position = [r[0].value, r[1].value, r[2].value]
+        orientation = [orientation[0] + r[9].value*t, orientation[1] + r[10].value*t, orientation[2] + r[11].value*t]
+
+        # For showing Graph
+        for ix in range(3):
+            real_poss[ix].append(Previous_position[ix])
+            pred_poss[ix].append(Predict_position[ix])
+
+        # For Error Calculate
         errors.append(sum([(Predict_position[i]-Previous_position[i])**2 for i in range(3)])/3)
-        for ci, value in enumerate(Previous_position+Predict_position) :
+        for ci, value in enumerate(Previous_position + Predict_position + orientation) :
             wrs.cell(row=ri, column=ci+1).value = value
         ri+=1
 
 
     # Using "position = previous_position + velocity*time + 0.5*acceleration*time^2"
-    Predict_position = [Predict_position[0] + r[12].value*t + r[6].value*0.5*t**2, Predict_position[1] + r[13].value*t + r[7].value*0.5*t**2, Predict_position[2] + r[14].value*t + (r[8].value-gravity)*0.5*t**2]
+    Predict_position = [Predict_position[0] + r[12].value*t, Predict_position[1] + r[13].value*t, Predict_position[2] + r[14].value*t]
 
 wr.save('pred.xlsx')
 print("RMSD :",(sum(errors)/len(errors))**0.5)
+plt.plot(real_poss[0], real_poss[1], color='blue', label = 'Real')
+plt.plot(pred_poss[0], pred_poss[1], color='red', label = 'Predict')
+plt.show()
