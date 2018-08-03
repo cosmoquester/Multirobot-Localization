@@ -22,9 +22,9 @@ print ("Connected to remote API server")
 
 # Car Control
 errorCode, car_handle = vrep.simxGetObjectHandle(clientID, "Pioneer_p3dx", vrep.simx_opmode_blocking)
-#errorCode, right_motor_handle = vrep.simxGetObjectHandle(clientID, "Pioneer_p3dx_rightMotor", vrep.simx_opmode_blocking)
-#vrep.simxSetJointTargetVelocity(clientID, left_motor_handle, 0.2, vrep.simx_opmode_streaming)
-#vrep.simxSetJointTargetVelocity(clientID, right_motor_handle, 0.2, vrep.simx_opmode_streaming)
+##errorCode, right_motor_handle = vrep.simxGetObjectHandle(clientID, "Pioneer_p3dx_rightMotor", vrep.simx_opmode_blocking)
+##vrep.simxSetJointTargetVelocity(clientID, left_motor_handle, 0.2, vrep.simx_opmode_streaming)
+##vrep.simxSetJointTargetVelocity(clientID, right_motor_handle, 0.2, vrep.simx_opmode_streaming)
 
 
 # Ultrasonic Sensor
@@ -32,13 +32,13 @@ errorCode, car_handle = vrep.simxGetObjectHandle(clientID, "Pioneer_p3dx", vrep.
 #returnCode, detectionState, detectedPoint, detectedObjectHandle, detectedSurfaceNormalVector = vrep.simxReadProximitySensor(clientID, sensor1, vrep.simx_opmode_streaming)
 
 # Gyro sensor
-errorCode, GyroSensor = vrep.simxGetObjectHandle(clientID, "GyroSensor_reference", vrep.simx_opmode_blocking)
+#errorCode, GyroSensor = vrep.simxGetObjectHandle(clientID, "GyroSensor_reference", vrep.simx_opmode_blocking)
 
 # Accelerometer
-errorCode, AccelSensor = vrep.simxGetObjectHandle(clientID, "Accelerometer_mass", vrep.simx_opmode_blocking)
+#errorCode, AccelSensor = vrep.simxGetObjectHandle(clientID, "Accelerometer_mass", vrep.simx_opmode_blocking)
 
 # GPS
-errorCode, GPS = vrep.simxGetObjectHandle(clientID, "GPS_reference", vrep.simx_opmode_blocking)
+#errorCode, GPS = vrep.simxGetObjectHandle(clientID, "GPS_reference", vrep.simx_opmode_blocking)
 
 # Create a workbook and add a worksheet.
 workbook = xlsxwriter.Workbook('data.xlsx')
@@ -90,6 +90,9 @@ try:
         # Simulation Time
         if t != vrep.simxGetLastCmdTime(clientID):
             t = vrep.simxGetLastCmdTime(clientID)
+
+            if not i % 100 :
+                print(i)
 
             for col, data in enumerate([pos[0], pos[1], pos[2], gyroX, gyroY, gyroZ, accelX, accelY, accelZ, ori[0], ori[1], ori[2], LinearV[0], LinearV[1], LinearV[2], t]):
                 worksheet.write(i, col, data)
