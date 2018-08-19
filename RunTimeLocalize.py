@@ -57,7 +57,7 @@ while True:
     errorCode, LinearV, AngularV = vrep.simxGetObjectVelocity(clientID, car_handle, vrep.simx_opmode_buffer)
     
     # Not Started
-    if not sum(pos) and not sum(LinearV):
+    if not sum(pos):
         continue
 
     # Simulation Time
