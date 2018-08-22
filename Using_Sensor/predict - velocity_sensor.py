@@ -52,7 +52,7 @@ for r in rows:
     
     time_p = r[15].value
 
-    v = [v[0] + r[9].value*t, v[1] + r[10].value*t, v[2] + r[8].value*t]
+    v = [v[0] + r[9].value*t, v[1] + r[10].value*t, v[2] + r[11].value*t]
     
     wrs.cell(row=ri, column=4).value = v[0]
     wrs.cell(row=ri, column=5).value = v[1]
